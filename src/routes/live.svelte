@@ -1,75 +1,84 @@
 <script lang="ts">
-    import { auth, db } from "../services/firebase";
+    import { auth, db, rtdb } from "../services/firebase";
     import router from "page";
     import Score from "../components/Score.svelte";
-    import { onDestroy } from "svelte";
+    import Filter from "../components/Filter.svelte";
 
-    // interface User {
-    //     email: string;
-    //     photoURL: string;
-    //     uid: string;
-    // }
-
-    interface Score {
-        teamB: string;
-        teamA: string;
-        teamScored: string;
-        competition: string;
-        player: string;
-        scoreType: string;
+    interface ThisGame {
+        childKey: string;
+        competitionName: string;
         teamACrest: string;
+        teamAName: string;
         teamBCrest: string;
-        teamAGoals: number;
-        teamBGoals: number;
-        teamAPoints: number;
-        teamBPoints: number;
-        timestamp: Date;
+        teamBName: string;
+        startTime: string;
+        sportType: string;
     }
 
     // let user: User | null;
-    let scores: Score[] = [];
-    let games = [];
-    const unsubscribe = db.collection("Live").onSnapshot((snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-            if (change.type === "added") {
-                scores = [...scores, change.doc.data() as Score];
-                games = [...games, change.doc.data().competition];
-                setTimeout(() => {
-                    if (document.getElementById("scroll-to"))
-                        document
-                            .getElementById("scroll-to")
-                            .scrollIntoView({ behavior: "smooth" });
-                }, 500);
-            }
-        });
-    });
+    let games: ThisGame[] = [];
+    let countyTeams: string[] = [];
+    let clubTeams: string[] = [];
 
-    onDestroy(unsubscribe);
+    const getGames = rtdb.ref(`games/`).once("value", function (snapshot) {
+        var data = snapshot.val();
+        if (data != null) {
+            console.log(data);
+            snapshot.forEach((childSnapshot) => {
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+                var competitionName =
+                    childSnapshot.val().competition.competitionName;
+                var teamAName = childSnapshot.val().teamA.teamName;
+                var teamACrest = childSnapshot.val().teamA.crest;
+                var teamBName = childSnapshot.val().teamB.teamName;
+                var teamBCrest = childSnapshot.val().teamB.crest;
+                var startTime = childSnapshot.val().times.startTime;
+                var clubIdA = childSnapshot.val().teamA.clubId;
+                var clubIdB = childSnapshot.val().teamB.clubId;
+                var countyIdA = childSnapshot.val().teamA.countyId;
+                var countyIdB = childSnapshot.val().teamB.countyId;
+                var sportType = childSnapshot.val().sportType;
+                if (clubIdA != undefined) {
+                    if (!clubTeams.includes(teamAName)) {
+                        clubTeams = [...clubTeams, teamAName];
+                    }
+                } else if (countyIdA != undefined) {
+                    if (!countyTeams.includes(countyIdA)) {
+                        countyTeams = [...countyTeams, countyIdA];
+                    }
+                }
 
-    function logout() {
-        if (auth.currentUser) {
-            auth.signOut()
-                .then(() => {})
-                .catch((e) => {
-                    throw new Error(e);
-                });
+                if (clubIdB != undefined) {
+                    if (!clubTeams.includes(teamBName)) {
+                        clubTeams = [...clubTeams, teamBName];
+                    }
+                } else if (countyIdB != undefined) {
+                    if (!countyTeams.includes(countyIdB)) {
+                        countyTeams = [...countyTeams, countyIdB];
+                    }
+                }
+                var game = {
+                    childKey: childKey,
+                    competitionName: competitionName,
+                    teamACrest: teamACrest,
+                    teamAName: teamAName,
+                    teamBCrest: teamBCrest,
+                    teamBName: teamBName,
+                    startTime: startTime,
+                    sportType: sportType,
+                };
+                games = [...games, game];
+
+                console.log(`Child: ${childKey}: ${childData}`);
+            });
+        } else {
+            console.log("Games data = null");
         }
-    }
-
-    // If the users authentication state changes update user
-    // auth.onAuthStateChanged(u => user = u);
-
-    // $: {
-    //     // if the users state changes to null redirect the user to the login page
-    //     if (user === null) router.redirect("/auth?action=login&next=%2Fchat");
-    // }
+    });
 </script>
 
-<!-- {#if typeof user === "undefined"}
-    <p class="w3-center w3-section"><i class="fas fa-spinner w3-spin fa-3x"></i> Loading</p> -->
-<!-- {:else}
-    {#if user} -->
-<div class="container">
+<div class="container-fluid">
     <h1>GAA Live Scores</h1>
     <p>
         Todays Live scores from all the club and county GAA Hurling and Football
@@ -79,21 +88,21 @@
     <br />
     <div class="row">
         <!-- Hide on screens smaller than medium  -->
-        <div class="col d-none d-md-block">
-            <!-- Filter -->
-            <h1>FILTER COUNTIES AND CLUBS</h1>
+        <div class="col-2 d-none d-md-block">
+            {#if games.length > 0}
+                <Filter {clubTeams} {countyTeams} />
+            {/if}
         </div>
         <!-- Current Total Scores -->
-        <div class="col">
+        <div class="col-12 col-xl-5">
             <div>
-                <br />
-                {#if scores.length > 0}
-                    {#each scores as s (s.id)}
+                {#if games.length > 0}
+                    {#each games as s (s.childKey)}
                         <Score {...s} />
                     {/each}
                 {:else}
                     <p class="w3-center w3-text-gray">
-                        Looks like no live scores are coming in yet today
+                        Loading todays games....
                     </p>
                 {/if}
                 <br id="scroll-to" />
@@ -102,13 +111,9 @@
             </div>
             <br />
         </div>
-        <div class="col d-none d-md-block">
+        <div class="col-5 d-none d-md-block">
             <!-- Show all scores -->
             <h1>show scores</h1>
         </div>
     </div>
-    <!-- {:else}
-        <p class="w3-center w3-section">Not logged in!</p>
-    {/if} -->
-    <!-- {/if} -->
 </div>

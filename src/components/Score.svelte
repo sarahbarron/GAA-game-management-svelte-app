@@ -1,69 +1,123 @@
 <script lang="ts">
-    export let teamB: string;
-    export let teamA: string;
-    export let teamScored: string;
-    export let competition: string;
-    export let player: string;
-    export let scoreType: string;
+    import { auth, db, rtdb } from "../services/firebase";
+    import router from "page";
+    export let childKey: string;
+    export let competitionName: string;
     export let teamACrest: string;
+    export let teamAName: string;
     export let teamBCrest: string;
-    export let teamAGoals: number;
-    export let teamBGoals: number;
-    export let teamAPoints: number;
-    export let teamBPoints: number;
-    export let timestamp: Date;
-    ("https://firebasestorage.googleapis.com/v0/b/gaaref-ae25d.appspot.com/o/Limerick.jpg?alt=media&token=31bbda3e-05fa-4fe5-ac0e-d3a499e7d1a1s");
+    export let teamBName: string;
+    export let startTime: string;
+    let teamAGoals: number;
+    let teamAPoints: number;
+    let teamBGoals: number;
+    let teamBPoints: number;
+    let latestPlayer: string;
+    let latestTime: string;
+    let latestScoreType: string;
+    let latestTeam: string;
 
-    let time = timestamp.toDate();
-    let t = time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+    latestPlayer = undefined;
+    latestTime = undefined;
+    latestScoreType = undefined;
+    latestTeam = undefined;
+
+    const latestScoreListener = rtdb
+        .ref(`games/${childKey}/latest`)
+        .on("value", function (snapshot) {
+            var data = snapshot.val();
+
+            if (data != null) {
+                console.log(data);
+
+                teamAGoals = snapshot.val().teamAGoals;
+                teamBGoals = snapshot.val().teamBGoals;
+                teamAPoints = snapshot.val().teamAPoints;
+                teamBPoints = snapshot.val().teamBPoints;
+                latestPlayer = snapshot.val().latestPlayer;
+                latestScoreType = snapshot.val().latestScoreType;
+                latestTeam = snapshot.val().latestTeamName;
+                latestTime = snapshot.val().latestTime;
+
+                teamAGoals = teamAGoals;
+
+                console.log(`Latest Score: ${latestTime}: ${latestTeam}, 
+            ${latestPlayer}, ${latestScoreType},${teamAGoals}, ${teamAPoints},
+            ${teamBGoals}, ${teamBPoints}`);
+            } else {
+                console.log("Latest Scores data = null");
+            }
+        });
 </script>
 
-<div class="card score-card" title={`${competition} at ${time}`}>
+<div class="card score-card" title={`${competitionName} at ${startTime}`}>
     <div class="row no-gutters">
         <div class="col-auto card-body">
-            <h5>{competition}: {teamA} V {teamB}</h5>
+            <h3>
+                {competitionName}
+            </h3>
+            <h4>
+                {teamAName} V {teamBName}
+            </h4>
         </div>
     </div>
     <div class="row no-gutters">
-        <div class="col-auto">
+        <div class="col-6 order-1 col-xl-3 order-xl-1">
             <img
                 src={teamACrest || ""}
-                id="crest-A-img"
-                class="img-fluid crest-img"
-                alt="{teamA} GAA Crest"
+                id="crest-A-img card-img "
+                class="img-fluid crest"
+                alt="{teamAName} GAA Crest"
             />
         </div>
-        <div class="col-auto">
+        <div class="col-6 order-2 col-xl-3 order-xl-2">
+            <div class="card-body">
+                <p id="teamAScore" class="card-txt">
+                    {teamAGoals} - {teamAPoints}
+                </p>
+            </div>
+        </div>
+        <div class="col-6 order-4 col-xl-3 order-xl-3">
+            <div class="card-body">
+                <p class="card-txt">{teamBGoals} - {teamBPoints}</p>
+            </div>
+        </div>
+        <div class="col-6 order-3 col-xl-3 order-xl-4">
             <img
                 src={teamBCrest || ""}
                 id="crest-B-img"
-                class="img-fluid card-img float-right"
-                alt="{teamB} GAA Crest"
+                class="img-fluid crest float-right"
+                alt="{teamBName} GAA Crest"
             />
         </div>
     </div>
     <div class="row no-gutters">
         <div class="col">
-            <div class="card-body">
-                <p>{teamAGoals} - {teamAPoints}</p>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card-body">
-                <p>{teamBGoals} - {teamBPoints}</p>
-            </div>
-        </div>
-    </div>
-    <div class="row no-gutters">
-        <div class="col">
-            Latest Score: {scoreType} - {teamScored} - {player}
+            <p class="card-txt">
+                {#if latestTime != undefined && latestTeam != undefined && latestPlayer != undefined && latestScoreType != undefined}
+                    Latest Score:
+                {/if}
+                {#if latestTime != undefined}{latestTime}:{/if}
+                {#if latestTeam != undefined}{latestTeam} -{/if}
+                {#if latestPlayer != undefined}{latestPlayer}-{/if}
+                {#if latestScoreType != undefined}{latestScoreType}{/if}
+            </p>
         </div>
     </div>
 </div>
 
 <style>
-    .crest-img {
-        max-height: 100px;
-        max-width: 100px;
+    .crest {
+        padding: 10px;
+        max-height: 185px;
+        max-width: 185px;
+    }
+    .score-card {
+        padding: 30px;
+    }
+
+    .card-txt {
+        font-size: x-large;
+        text-align: center;
     }
 </style>
