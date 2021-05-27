@@ -50,9 +50,9 @@
         });
 </script>
 
-<div class="card score-card" title={`${competitionName} at ${startTime}`}>
+<div class="score-card" title={`${competitionName} at ${startTime}`}>
     <div class="row no-gutters">
-        <div class="col-auto card-body">
+        <div class="col-auto">
             <h3>
                 {competitionName}
             </h3>
@@ -70,15 +70,15 @@
                 alt="{teamAName} GAA Crest"
             />
         </div>
-        <div class="col-6 order-2 col-xl-3 order-xl-2">
-            <div class="card-body">
+        <div class="col-6 order-2 col-xl-3 order-xl-2 score-container">
+            <div class="">
                 <p id="teamAScore" class="card-txt">
                     {teamAGoals} - {teamAPoints}
                 </p>
             </div>
         </div>
-        <div class="col-6 order-4 col-xl-3 order-xl-3">
-            <div class="card-body">
+        <div class="col-6 order-4 col-xl-3 order-xl-3 score-container">
+            <div class="">
                 <p class="card-txt">{teamBGoals} - {teamBPoints}</p>
             </div>
         </div>
@@ -105,6 +105,7 @@
         </div>
     </div>
 </div>
+<hr />
 
 <style>
     .crest {
@@ -113,11 +114,19 @@
         max-width: 185px;
     }
     .score-card {
-        padding: 30px;
+        padding: 30px 30px 30px 50px;
     }
 
     .card-txt {
         font-size: x-large;
         text-align: center;
+    }
+
+    .score-container {
+        align-self: center;
+    }
+    h3,
+    h4 {
+        padding: 10px 10px 20px 10px;
     }
 </style>

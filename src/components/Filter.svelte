@@ -1,15 +1,33 @@
 <script lang="ts">
     import { auth, db, rtdb } from "../services/firebase";
     import router from "page";
-    export let countyTeams: string[];
-    export let clubTeams: string[];
+    export let countyTeams: {
+        countyId: string;
+        countyName: string;
+        isAClubGame: boolean;
+        isACountyGame: boolean;
+    }[];
+    export let clubTeams: {
+        clubId: string;
+        clubName: string;
+        competitionCounty: string;
+        isAClubGame: boolean;
+        isACountyGame: boolean;
+    }[];
+    export let aClubsCounty: string[];
+
     let hurling = "Hurling";
     let hurlingChecked = false;
     let football = "Football";
     let footballChecked = false;
+    let filterByClub = "Club";
+    let filterClubChecked = false;
+    let filterByCounty = "County";
+    let filterCountyChecked = false;
 
     let countyTeamsChecked: boolean[] = [];
     let clubTeamsChecked: boolean[] = [];
+
     let x = 0;
     while (x < countyTeams.length) {
         countyTeamsChecked[x] = false;
@@ -28,7 +46,7 @@
             <h3>Filter Games</h3>
             <hr />
             <h3>Sport Type</h3>
-            <hr />
+
             <div class="col-12 filter-label">
                 <label>
                     <input type="checkbox" bind:checked={hurlingChecked} />
@@ -42,8 +60,25 @@
                 </label>
             </div>
             <hr />
-            <h3>County Teams</h3>
+
+            <h3>Club or County</h3>
+
+            <div class="col-12 filter-label">
+                <label>
+                    <input type="checkbox" bind:checked={filterCountyChecked} />
+                    {filterByCounty || ""}
+                </label>
+            </div>
+            <div class="col-12 filter-label">
+                <label>
+                    <input type="checkbox" bind:checked={filterClubChecked} />
+                    {filterByClub || ""}
+                </label>
+            </div>
             <hr />
+
+            <h3>County Teams</h3>
+
             {#if countyTeams.length > 0}
                 {#each countyTeams as team}
                     <div class="col-12 filter-label">
@@ -54,7 +89,7 @@
                                     countyTeams.indexOf(team)
                                 ]}
                             />
-                            {team || ""}
+                            {team.countyName || ""}
                         </label>
                     </div>
                 {/each}
@@ -63,23 +98,34 @@
             {/if}
             <hr />
             <h3>Club Teams</h3>
-            <hr />
-            {#if clubTeams.length > 0}
-                {#each clubTeams as team}
-                    <div class="col-12 filter-label">
-                        <label>
-                            <input
-                                type="checkbox"
-                                bind:checked={clubTeamsChecked[
-                                    clubTeams.indexOf(team)
-                                ]}
-                            />
-                            {team || ""}
-                        </label>
+
+            {#if aClubsCounty.length > 0}
+                {#each aClubsCounty as county}
+                    <div class="col-12">
+                        <h4>{county}</h4>
                     </div>
+                    {#if clubTeams.length > 0}
+                        {#each clubTeams as team}
+                            {#if team.competitionCounty === county}
+                                <div class="col-12" />
+                                <div class="col-12 filter-label">
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            bind:checked={clubTeamsChecked[
+                                                clubTeams.indexOf(team)
+                                            ]}
+                                        />
+                                        {team.clubName || ""}
+                                    </label>
+                                </div>
+                            {/if}
+                        {/each}
+                    {:else}
+                        <p>No Club Games Today</p>
+                    {/if}
+                    <hr />
                 {/each}
-            {:else}
-                <p>No County Games Today</p>
             {/if}
         </div>
     </div>
@@ -99,6 +145,9 @@
         height: 95%;
     }
     h3 {
+        margin: 20px 20px 40px 20px;
+    }
+    h4 {
         margin: 20px;
     }
 </style>
