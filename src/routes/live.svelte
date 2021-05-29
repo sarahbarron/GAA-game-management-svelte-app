@@ -36,6 +36,8 @@
     let countyTeams: CountyTeam[] = [];
     let clubTeams: ClubTeam[] = [];
     let aClubsCounty: string[] = [];
+    let teamAPlayers: string[] = [];
+    let teamBPlayers: string[] = [];
 
     const getGames = rtdb.ref(`games/`).once("value", function (snapshot) {
         var data = snapshot.val();
@@ -58,9 +60,22 @@
                 var sportType = childSnapshot.val().sportType;
                 var isACountyGame = childSnapshot.val().isACountyGame;
                 var isAClubGame = childSnapshot.val().isAClubGame;
+                var teamATeamSheet = childSnapshot.val().teamA.players;
+                var teamBTeamSheet = childSnapshot.val().teamB.players;
                 var competitionCounty =
                     childSnapshot.val().competition.competitionCounty;
-
+                if (teamATeamSheet != undefined) {
+                    for (let player in teamATeamSheet) {
+                        teamAPlayers = [...teamAPlayers, player];
+                    }
+                    console.log(`Live TeamAPlayers ${teamAPlayers}`);
+                }
+                if (teamBTeamSheet != undefined) {
+                    for (let player in teamBTeamSheet) {
+                        teamBPlayers = [...teamBPlayers, player];
+                    }
+                    console.log(`Live TeamBPlayers ${teamAPlayers}`);
+                }
                 //  If the Game is a club game add Team As club details
                 if (clubIdA != undefined) {
                     if (!clubTeams.includes(teamAName)) {
@@ -154,18 +169,12 @@
     <br />
     <DropdownFilter {countyTeams} {clubTeams} {aClubsCounty} />
     <div class="row">
-        <!-- Hide on screens smaller than medium  -->
-        <div class="col-2 d-none d-md-block">
-            {#if games.length > 0}
-                <!-- <Filter {clubTeams} {countyTeams} {aClubsCounty} /> -->
-            {/if}
-        </div>
         <!-- Current Total Scores -->
-        <div class="col-12 col-xl-5">
+        <div class="col-12">
             <div>
                 {#if games.length > 0}
                     {#each games as s (s.childKey)}
-                        <Score {...s} />
+                        <Score {...s} {teamAPlayers} {teamBPlayers} />
                     {/each}
                 {:else}
                     <p class="w3-center w3-text-gray">
@@ -178,19 +187,24 @@
             </div>
             <br />
         </div>
-        <div class="col-5 d-none d-md-block">
-            <!-- Show all scores -->
-            <h3>show scores</h3>
-        </div>
     </div>
 </div>
 
 <style>
     h1 {
         text-align: center;
-        font-size: 100px;
+        font-size: 50px;
     }
     h2 {
         text-align: center;
+        font-size: 20px;
+    }
+    @media (min-width: 768px) {
+        h1 {
+            font-size: 100px;
+        }
+        h2 {
+            font-size: xx-large;
+        }
     }
 </style>

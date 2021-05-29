@@ -30,8 +30,8 @@
     let clubTeamsChecked: boolean[] = [];
 </script>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
+<nav id="dropdown-filter" class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
         <span class="navbar-brand mb-0 h1">FILTER RESULTS</span>
         <button
             class="navbar-toggler"
@@ -238,22 +238,27 @@
 </nav>
 
 <style>
-    .dropdown-list-checkbox {
-        height: 1em;
-        width: 1em;
-        margin: 20px 10px;
-        padding: 12px;
-    }
-    .dropdown-list-header {
-        font-size: x-large;
-        padding: 5px 50px;
-    }
-    .dropdown-list-label {
-        font-size: x-large;
-        padding: 12px 12px 12px 0px;
-    }
+    @media (min-width: 768px) {
+        .dropdown-list-checkbox {
+            height: 1em;
+            width: 1em;
+            margin: 20px 10px;
+            padding: 12px;
+        }
+        .dropdown-list-header {
+            font-size: x-large;
+            padding: 5px 50px;
+        }
+        .dropdown-list-label {
+            font-size: x-large;
+            padding: 12px 12px 12px 0px;
+        }
 
-    .dropdown-county-header {
-        font-size: large;
+        .dropdown-county-header {
+            font-size: large;
+        }
+        #dropdown-filter {
+            padding: 0px 50px;
+        }
     }
 </style>
