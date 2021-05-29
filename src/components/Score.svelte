@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import { rtdb } from "../services/firebase";
     import Accordian from "./Accordian.svelte";
     export let childKey: string;
@@ -25,28 +26,30 @@
     latestScoreType = undefined;
     latestTeam = undefined;
 
-    const latestScoreListener = rtdb
-        .ref(`games/${childKey}/latest`)
-        .on("value", function (snapshot) {
-            var data = snapshot.val();
+    onMount(async () => {
+        const latestScoreListener = rtdb
+            .ref(`games/${childKey}/latest`)
+            .on("value", function (snapshot) {
+                var data = snapshot.val();
 
-            if (data != null) {
-                console.log(data);
+                if (data != null) {
+                    console.log(data);
 
-                teamAGoals = snapshot.val().teamAGoals;
-                teamBGoals = snapshot.val().teamBGoals;
-                teamAPoints = snapshot.val().teamAPoints;
-                teamBPoints = snapshot.val().teamBPoints;
-                latestPlayer = snapshot.val().latestPlayer;
-                latestScoreType = snapshot.val().latestScoreType;
-                latestTeam = snapshot.val().latestTeamName;
-                latestTime = snapshot.val().latestTime;
+                    teamAGoals = snapshot.val().teamAGoals;
+                    teamBGoals = snapshot.val().teamBGoals;
+                    teamAPoints = snapshot.val().teamAPoints;
+                    teamBPoints = snapshot.val().teamBPoints;
+                    latestPlayer = snapshot.val().latestPlayer;
+                    latestScoreType = snapshot.val().latestScoreType;
+                    latestTeam = snapshot.val().latestTeamName;
+                    latestTime = snapshot.val().latestTime;
 
-                teamAGoals = teamAGoals;
-            } else {
-                console.log("Latest Scores data = null");
-            }
-        });
+                    teamAGoals = teamAGoals;
+                } else {
+                    console.log("Latest Scores data = null");
+                }
+            });
+    });
 </script>
 
 <div class="score-card" title={`${competitionName} at ${startTime}`}>
