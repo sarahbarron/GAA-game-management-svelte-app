@@ -9,6 +9,7 @@
     export let teamBCrest: string;
     export let teamBName: string;
     export let startTime: string;
+    export let sportType: string;
     export let teamAPlayers: string[];
     export let teamBPlayers: string[];
 
@@ -33,8 +34,6 @@
                 var data = snapshot.val();
 
                 if (data != null) {
-                    console.log(data);
-
                     teamAGoals = snapshot.val().teamAGoals;
                     teamBGoals = snapshot.val().teamBGoals;
                     teamAPoints = snapshot.val().teamAPoints;
@@ -45,8 +44,6 @@
                     latestTime = snapshot.val().latestTime;
 
                     teamAGoals = teamAGoals;
-                } else {
-                    console.log("Latest Scores data = null");
                 }
             });
     });
@@ -60,7 +57,7 @@
                     <div class="row no-gutters">
                         <div class="col-12 col-lg-auto">
                             <h3>
-                                {competitionName}:
+                                ({sportType.toLocaleUpperCase()}) {competitionName}:
                             </h3>
                         </div>
                         <div class="col-12 col-lg-auto">

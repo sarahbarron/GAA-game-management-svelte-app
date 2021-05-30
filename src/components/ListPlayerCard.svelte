@@ -17,13 +17,11 @@
     if (teamPlayers != undefined) {
         while (x < teamPlayers.length) {
             let playerId = teamPlayers[x];
-            console.log(`player ${playerId}`);
             const latestScoreListener = rtdb
                 .ref(`games/${childKey}/${teamAorB}/players/${playerId}`)
                 .on("value", function (snapshot) {
                     var data = snapshot.val();
                     if (data != null) {
-                        console.log(data);
                         let playerName = snapshot.val().playerName;
                         let jerseyNumber = snapshot.val().jerseyNumber;
                         let fieldPosition = snapshot.val().fieldPosition;
@@ -37,8 +35,6 @@
                             onField: onField,
                         };
                         teamPlayersDetails = [...teamPlayersDetails, player];
-                    } else {
-                        console.log("Latest Scores data = null");
                     }
                 });
             x++;

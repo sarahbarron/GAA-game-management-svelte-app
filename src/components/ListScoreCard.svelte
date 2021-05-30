@@ -7,7 +7,7 @@
     export let teamBCrest: string;
     export let teamAName: string;
     export let teamBName: string;
-
+    let x = 0;
     interface Score {
         id: string;
         time: string;
@@ -16,44 +16,46 @@
         scoreType: string;
         crest: string;
     }
-
     let allScores: Score[] = [];
-
     onMount(async () => {
         // Create a listener for new scores
-        const scoresListener = rtdb
-            .ref(`games/${childKey}/scores`)
-            .on('child_added', function (snapshot) {
-                var data = snapshot.val();
-                if (data != null) {
-                    snapshot.forEach((childSnapshot) => {
-                        console.log(data);
-                        let id = childSnapshot.val();
-                        let time = childSnapshot.val().latestTime;
-                        let team = childSnapshot.val().latestTeamName;
-                        let player = childSnapshot.val().latestPlayer;
-                        let scoreType = childSnapshot.val().latestScoreType;
-                        let crest = "";
-                        if (team === teamAName) {
-                            crest = teamACrest;
-                        } else if (team == teamBName) {
-                            crest = teamBCrest;
-                        }
-                        let score = {
-                            id,
-                            time,
-                            team,
-                            player,
-                            scoreType,
-                            crest,
-                        };
-                        allScores = [...allScores, score];
-                    });
-                } else {
-                    console.log("Latest Scores data = null");
-                }
-            });
+        const scoreRef = rtdb.ref(`games/${childKey}/scores`);
+        var newScoreRef = scoreRef.on("child_added", (data) => {
+            addScoreElement(
+                data.key,
+                data.val().latestTime,
+                data.val().latestTeamName,
+                data.val().latestScoreType,
+                data.val().latestPlayer
+            );
+        });
     });
+
+    let addScoreElement = async function (
+        key: string,
+        time: string,
+        team: string,
+        scoreType: string,
+        player: string
+    ) {
+        let crest = "";
+        if (team === teamAName) {
+            crest = teamACrest;
+        } else if (team == teamBName) {
+            crest = teamBCrest;
+        }
+        allScores = [
+            ...allScores,
+            {
+                id: key,
+                time: time,
+                team: team,
+                scoreType: scoreType,
+                player: player,
+                crest: crest,
+            },
+        ];
+    };
 </script>
 
 <div class="card">

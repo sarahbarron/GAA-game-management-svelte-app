@@ -1,7 +1,5 @@
 <script lang="ts">
     import { auth, db, rtdb } from "../services/firebase";
-    import router from "page";
-    import { each } from "svelte/internal";
     export let countyTeams: {
         countyId: string;
         countyName: string;
@@ -199,33 +197,41 @@
                         {#if aClubsCounty.length > 0}
                             {#each aClubsCounty as county}
                                 <li>
-                                    <h6
-                                        class="dropdown-header dropdown-county-header"
+                                    <!-- svelte-ignore a11y-invalid-attribute -->
+                                    <a class="dropdown-item" href="#">
+                                        <h6
+                                            class="dropdown-header dropdown-county-header"
+                                        >
+                                            {county}
+                                        </h6>
+                                    </a>
+                                    <!-- </li> -->
+                                    <ul
+                                        class="dropdown-menu dropdown-submenu dropdown-submenu-right"
                                     >
-                                        {county}
-                                    </h6>
-                                </li>
-                                {#if clubTeams.length > 0}
-                                    {#each clubTeams as team}
-                                        {#if team.competitionCounty === county}
-                                            <li>
-                                                <input
-                                                    class="form-check-input dropdown-list-checkbox"
-                                                    type="checkbox"
-                                                    value={team.clubName}
-                                                    id={team.clubId}
-                                                />
-                                                <label
-                                                    class="form-check-label dropdown-list-label"
-                                                    for={team.clubId}
-                                                >
-                                                    {team.clubName}
-                                                </label>
-                                            </li>
+                                        {#if clubTeams.length > 0}
+                                            {#each clubTeams as team}
+                                                {#if team.competitionCounty === county}
+                                                    <li>
+                                                        <input
+                                                            class="form-check-input dropdown-list-checkbox"
+                                                            type="checkbox"
+                                                            value={team.clubName}
+                                                            id={team.clubId}
+                                                        />
+                                                        <label
+                                                            class="form-check-label dropdown-list-label"
+                                                            for={team.clubId}
+                                                        >
+                                                            {team.clubName}
+                                                        </label>
+                                                    </li>
+                                                {/if}
+                                            {/each}
                                         {/if}
-                                    {/each}
-                                {/if}
-                                <li><hr class="dropdown-divider" /></li>
+                                        <li><hr class="dropdown-divider" /></li>
+                                    </ul>
+                                </li>
                             {/each}
                         {:else}
                             <p>Todays Games</p>

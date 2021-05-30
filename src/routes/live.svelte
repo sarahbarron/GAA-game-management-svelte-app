@@ -44,7 +44,6 @@
         const getGames = rtdb.ref(`games/`).once("value", function (snapshot) {
             var data = snapshot.val();
             if (data != null) {
-                console.log(data);
                 snapshot.forEach((childSnapshot) => {
                     var childKey = childSnapshot.key;
                     var childData = childSnapshot.val();
@@ -70,13 +69,11 @@
                         for (let player in teamATeamSheet) {
                             teamAPlayers = [...teamAPlayers, player];
                         }
-                        console.log(`Live TeamAPlayers ${teamAPlayers}`);
                     }
                     if (teamBTeamSheet != undefined) {
                         for (let player in teamBTeamSheet) {
                             teamBPlayers = [...teamBPlayers, player];
                         }
-                        console.log(`Live TeamBPlayers ${teamAPlayers}`);
                     }
                     //  If the Game is a club game add Team As club details
                     if (clubIdA != undefined) {
@@ -162,11 +159,7 @@
                         sportType: sportType,
                     };
                     games = [...games, game];
-
-                    console.log(`Child: ${childKey}: ${childData}`);
                 });
-            } else {
-                console.log("Games data = null");
             }
         });
     });

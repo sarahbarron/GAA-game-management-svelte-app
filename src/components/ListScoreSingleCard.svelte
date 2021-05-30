@@ -1,4 +1,5 @@
 <script lang="ts">
+    export let id: string;
     export let crest: string;
     export let time: string;
     export let team: string;
@@ -6,7 +7,7 @@
     export let player: string;
 </script>
 
-<div class="row">
+<div {id} class="row">
     <img
         src={crest || ""}
         id="crest-A-img card-img"
