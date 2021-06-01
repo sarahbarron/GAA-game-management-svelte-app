@@ -21,6 +21,7 @@ interface ThisGame {
     sportType: string;
     isAClubGame: boolean;
     isACountyGame: boolean;
+    timestamp: Date;
 };
 
 let hurling: boolean;
@@ -102,7 +103,11 @@ export const filterGames = async () => {
         games = [...new Set(gamesClub.concat(gamesCounty))];
     }
 
+    let sortedGames = games.sort(
+        (first, second) =>
+            0 - (first.timestamp > second.timestamp ? -1 : 1)
+    );
     // set the filtered games in the store.
-    filteredGames.set(games);
+    filteredGames.set(sortedGames);
     return;
 }

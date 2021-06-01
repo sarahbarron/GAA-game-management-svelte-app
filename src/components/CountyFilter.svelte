@@ -2,7 +2,9 @@
     import { selectedCounties } from "../services/store";
     import { onDestroy } from "svelte";
     import { filterGames } from "../services/filterList";
+    import DropdownHeaderFilter from "./dropdownHeaderFilter.svelte";
 
+    let heading: string = "County Teams";
     interface countyTeams {
         countyId: string;
         countyName: string;
@@ -31,16 +33,7 @@
 </script>
 
 <li class="nav-item dropdown dropdown-list-header">
-    <a
-        class="nav-link dropdown-toggle"
-        href="#"
-        id="navbarDarkDropdownMenuLink"
-        role="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-    >
-        County Teams
-    </a>
+    <DropdownHeaderFilter {heading} />
     <ul
         class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
         aria-labelledby="navbarDarkDropdownMenuLink"

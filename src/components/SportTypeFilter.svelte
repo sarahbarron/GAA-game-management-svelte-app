@@ -2,10 +2,12 @@
     import { hurlingChecked, footballChecked } from "../services/store";
     import { onDestroy } from "svelte";
     import { filterGames } from "../services/filterList";
+    import DropdownHeaderFilter from "./dropdownHeaderFilter.svelte";
     let hurling = "Hurling";
     let football = "Football";
     let hurlingX: boolean;
     let footballX: boolean;
+    let heading: string = "Sport Type";
 
     // Subscibe to store value
     const unsubscribeHurlingChecked = hurlingChecked.subscribe((value) => {
@@ -31,16 +33,7 @@
 
 <!-- Sport Type Drop Down -->
 <li class="nav-item dropdown dropdown-list-header">
-    <a
-        class="nav-link dropdown-toggle"
-        href="#"
-        id="navbarDarkDropdownMenuLink"
-        role="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-    >
-        Sport Type
-    </a>
+    <DropdownHeaderFilter {heading} />
     <ul
         class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
         aria-labelledby="navbarDarkDropdownMenuLink"

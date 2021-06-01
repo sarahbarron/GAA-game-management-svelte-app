@@ -36,11 +36,7 @@
         <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
             <ul class="navbar-nav">
                 <SportTypeFilter />
-                <!-- Club Or County Dropdown -->
-
                 <ClubOrCountyFilter />
-
-                <!-- County Teams DropDown -->
                 <CountyFilter {countyTeams} />
                 <ClubFilter {clubTeams} {aClubsCounty} />
             </ul>
@@ -52,6 +48,9 @@
     @media (min-width: 768px) {
         #dropdown-filter {
             padding: 0px 50px;
+        }
+        nav {
+            margin-bottom: 70px;
         }
     }
 </style>

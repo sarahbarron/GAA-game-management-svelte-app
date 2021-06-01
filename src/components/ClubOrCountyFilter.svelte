@@ -1,7 +1,10 @@
 <script lang="ts">
-    import { clubChecked, countyChecked, allGames } from "../services/store";
+    import { clubChecked, countyChecked } from "../services/store";
     import { onDestroy } from "svelte";
     import { filterGames } from "../services/filterList";
+    import DropdownHeaderFilter from "./dropdownHeaderFilter.svelte";
+
+    let heading = "Club Or County";
     let clubX: boolean;
     let countyX: boolean;
 
@@ -28,16 +31,7 @@
 </script>
 
 <li class="nav-item dropdown dropdown-list-header">
-    <a
-        class="nav-link dropdown-toggle"
-        href="#"
-        id="navbarDarkDropdownMenuLink"
-        role="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-    >
-        Club Or County
-    </a>
+    <DropdownHeaderFilter {heading} />
     <ul
         class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
         aria-labelledby="navbarDarkDropdownMenuLink"

@@ -2,7 +2,9 @@
     import { selectedClubs } from "../services/store";
     import { onDestroy } from "svelte";
     import { filterGames } from "../services/filterList";
+    import DropdownHeaderFilter from "./dropdownHeaderFilter.svelte";
 
+    let heading: string = "Club Teams";
     interface clubTeams {
         clubId: string;
         clubName: string;
@@ -35,16 +37,7 @@
 
 <!-- Club Teams  -->
 <li class="nav-item dropdown dropdown-list-header">
-    <a
-        class="nav-link dropdown-toggle"
-        href="#"
-        id="navbarDropdownClubTeams"
-        role="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-    >
-        Club Teams
-    </a>
+    <DropdownHeaderFilter {heading} />
     <ul
         class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
         aria-labelledby="navbarDarkDropdownMenuLink"

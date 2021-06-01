@@ -12,6 +12,7 @@
     export let sportType: string;
     export let isAClubGame: boolean;
     export let isACountyGame: boolean;
+    export let timestamp: Date;
     export let teamAPlayers: string[];
     export let teamBPlayers: string[];
 
@@ -44,8 +45,6 @@
                     latestScoreType = snapshot.val().latestScoreType;
                     latestTeam = snapshot.val().latestTeamName;
                     latestTime = snapshot.val().latestTime;
-
-                    teamAGoals = teamAGoals;
                 }
             });
     });
@@ -59,12 +58,15 @@
                     <div class="row no-gutters">
                         <div class="col-12 col-lg-auto">
                             <h3>
-                                ({sportType.toLocaleUpperCase()}) {competitionName}:
+                                <span class="bold-text">{startTime}</span>
+                                :
+                                {competitionName}:
                             </h3>
                         </div>
                         <div class="col-12 col-lg-auto">
                             <h3>
                                 {teamAName} V {teamBName}
+                                ({sportType})
                             </h3>
                         </div>
                     </div>

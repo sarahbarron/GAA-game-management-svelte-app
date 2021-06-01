@@ -5,6 +5,7 @@
     import NavBar from "../components/NavBar.svelte";
     import { onDestroy, onMount } from "svelte";
     import { allGames, filteredGames } from "../services/store";
+    import { filterGames } from "../services/filterList";
 
     let all_games: ThisGame[];
     const unsubscribeAllGames = allGames.subscribe((value) => {
@@ -29,6 +30,7 @@
         sportType: string;
         isAClubGame: boolean;
         isACountyGame: boolean;
+        timestamp: Date;
     }
 
     interface CountyTeam {
@@ -72,6 +74,8 @@
                     var teamBName = childSnapshot.val().teamB.teamName;
                     var teamBCrest = childSnapshot.val().teamB.crest;
                     var startTime = childSnapshot.val().times.startTime;
+                    var timestamp =
+                        childSnapshot.val().times.timestamp._seconds;
                     var clubIdA = childSnapshot.val().teamA.clubId;
                     var clubIdB = childSnapshot.val().teamB.clubId;
                     var countyIdA = childSnapshot.val().teamA.countyId;
@@ -174,12 +178,17 @@
                         teamBCrest: teamBCrest,
                         teamBName: teamBName,
                         startTime: startTime,
+                        timestamp: timestamp,
                         sportType: sportType,
                         isAClubGame: isAClubGame,
                         isACountyGame: isACountyGame,
                     };
-                    allGames.set([...all_games, game]);
-                    filteredGames.set([...filtered_games, game]);
+                    let sortedGames = [...all_games, game].sort(
+                        (first, second) =>
+                            0 - (first.timestamp > second.timestamp ? -1 : 1)
+                    );
+                    allGames.set(sortedGames);
+                    filteredGames.set(sortedGames);
                 });
 
                 // Sort alphabetically
