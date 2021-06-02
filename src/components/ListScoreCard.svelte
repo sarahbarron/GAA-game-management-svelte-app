@@ -65,7 +65,7 @@
                 <ListScoreSingleCard {...s} />
             {/each}
         {:else}
-            <p class="w3-center w3-text-gray">Loading todays games....</p>
+            <p class="w3-center w3-text-gray">No scores available ......</p>
         {/if}
     </div>
 </div>

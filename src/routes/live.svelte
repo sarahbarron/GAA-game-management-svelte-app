@@ -6,6 +6,7 @@
     import { onDestroy, onMount } from "svelte";
     import { allGames, filteredGames } from "../services/store";
     import { filterGames } from "../services/filterList";
+    import Footer from "../components/Footer.svelte";
 
     let all_games: ThisGame[];
     const unsubscribeAllGames = allGames.subscribe((value) => {
@@ -236,6 +237,7 @@
         </div>
     </div>
 </div>
+<Footer />
 
 <style>
     h1 {

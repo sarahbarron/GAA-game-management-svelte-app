@@ -65,8 +65,7 @@
                         </div>
                         <div class="col-12 col-lg-auto">
                             <h3>
-                                {teamAName} V {teamBName}
-                                ({sportType})
+                                {teamAName} V {teamBName} ({sportType})
                             </h3>
                         </div>
                     </div>
