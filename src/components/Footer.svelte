@@ -16,6 +16,10 @@
     footer {
         background-color: #005e82;
         padding: 5px;
+        margin-top: 50px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
     }
     footer > div {
         color: aliceblue;
