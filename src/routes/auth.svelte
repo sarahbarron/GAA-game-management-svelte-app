@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
     import Auth from "../components/Auth.svelte";
 
     export let qs;
@@ -11,4 +11,4 @@
 <Auth
     authMode={qs.action}
     on:auth={() => (window.location.href = qs.next || "/")}
-/>
+/> -->

@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
     import { auth, googleAuth } from "../services/firebase";
     import { createEventDispatcher } from "svelte";
     import { fade } from "svelte/transition";
@@ -122,7 +122,7 @@
                     style="width: 50%">REGISTER</button
                 >
             </div>
-            <!-- Email login/register forms -->
+            
             {#if authMode === "login"}
                 <form in:fade on:submit|preventDefault={login}>
                     {#if err}
@@ -231,4 +231,4 @@
             </p>
         </div>
     {/if}
-</div>
+</div> -->

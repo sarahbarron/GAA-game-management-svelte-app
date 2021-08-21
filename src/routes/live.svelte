@@ -1,11 +1,9 @@
 <script lang="ts">
-    import { auth, db, rtdb } from "../services/firebase";
-    import router from "page";
+    import { rtdb } from "../services/firebase";
     import Score from "../components/Score.svelte";
     import NavBar from "../components/NavBar.svelte";
     import { onDestroy, onMount } from "svelte";
     import { allGames, filteredGames } from "../services/store";
-    import { filterGames } from "../services/filterList";
     import Footer from "../components/Footer.svelte";
 
     let all_games: ThisGame[];
