@@ -71,3 +71,8 @@ h4, h5 {
 p{
 	font-size: 20px;
 }
+
+.page-container{
+	position:relative;
+	min-height: 100vh;
+}

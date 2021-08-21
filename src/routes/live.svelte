@@ -205,37 +205,39 @@
     };
 </script>
 
-<div class="container-fluid">
-    <h1>GAA Live Scores</h1>
-    <h2>
-        Todays live scores from all Irish Club and County GAA Hurling and
-        Football games
-    </h2>
+<div class="page-container">
+    <div class="container-fluid">
+        <h1>GAA Live Scores</h1>
+        <h2>
+            Todays live scores from all Irish Club and County GAA Hurling and
+            Football games
+        </h2>
 
-    <br />
-    <NavBar {countyTeams} {clubTeams} {aClubsCounty} />
-    <div class="row">
-        <!-- Current Total Scores -->
-        <div class="col-12">
-            <div>
-                {#if filtered_games.length > 0}
-                    {#each filtered_games as s (s.childKey)}
-                        <Score {...s} {teamAPlayers} {teamBPlayers} />
-                    {/each}
-                {:else}
-                    <p class="w3-center w3-text-gray">
-                        Loading todays games....
-                    </p>
-                {/if}
-                <br id="scroll-to" />
+        <br />
+        <NavBar {countyTeams} {clubTeams} {aClubsCounty} />
+        <div class="row">
+            <!-- Current Total Scores -->
+            <div class="col-12">
+                <div>
+                    {#if filtered_games.length > 0}
+                        {#each filtered_games as s (s.childKey)}
+                            <Score {...s} {teamAPlayers} {teamBPlayers} />
+                        {/each}
+                    {:else}
+                        <p class="w3-center w3-text-gray">
+                            Loading todays games....
+                        </p>
+                    {/if}
+                    <br id="scroll-to" />
 
+                    <br />
+                </div>
                 <br />
             </div>
-            <br />
         </div>
     </div>
+    <Footer />
 </div>
-<Footer />
 
 <style>
     h1 {
