@@ -169,6 +169,13 @@
                             countyTeams = [...countyTeams, county];
                         }
                     }
+                    if (sportType != undefined || sportType != null) {
+                        if (sportType == "Hurling") {
+                            sportType = "hurling";
+                        } else {
+                            sportType = "football";
+                        }
+                    }
                     var game = {
                         childKey: childKey,
                         competitionName: competitionName,

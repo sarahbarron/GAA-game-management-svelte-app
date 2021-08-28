@@ -3,8 +3,8 @@
     import { onDestroy } from "svelte";
     import { filterGames } from "../services/filterList";
     import DropdownHeaderFilter from "./dropdownHeaderFilter.svelte";
-    let hurling = "Hurling";
-    let football = "Football";
+    let hurling = "hurling";
+    let football = "football";
     let hurlingX: boolean;
     let footballX: boolean;
     let heading: string = "Sport Type";

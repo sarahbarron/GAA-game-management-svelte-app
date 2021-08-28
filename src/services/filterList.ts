@@ -49,12 +49,12 @@ export const filterGames = async () => {
     if ((hurling && football) || (!hurling && !football)) { }
     else if (hurling) {
         games = games.filter((game) => {
-            return game.sportType === "Hurling";
+            return game.sportType === "hurling";
         });
     }
     else if (football) {
         games = games.filter((game) => {
-            return game.sportType === "Gaelic Football";
+            return game.sportType === "football";
         });
     }
 
