@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { auth, db, rtdb } from "../services/firebase";
-    import router from "page";
     export let countyTeams: {
         countyId: string;
         countyName: string;
@@ -20,6 +18,7 @@
     let hurlingChecked = false;
     let football = "Football";
     let footballChecked = false;
+
     let filterByClub = "Club";
     let filterClubChecked = false;
     let filterByCounty = "County";
