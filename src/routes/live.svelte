@@ -193,6 +193,7 @@
                         (first, second) =>
                             0 - (first.timestamp > second.timestamp ? -1 : 1)
                     );
+                    console.log(game);
                     allGames.set(sortedGames);
                     filteredGames.set(sortedGames);
                 });
